@@ -1,9 +1,11 @@
 import UniqueEntityId from "../value-objects/unique-entity-id.vo"
 
 abstract class Entity<Props> {
+  protected readonly props: Props
   public readonly uniqueEntityId: UniqueEntityId
 
-  constructor(private readonly props: Props, id?: UniqueEntityId) {
+  constructor(props: Props, id?: UniqueEntityId) {
+    this.props = props
     this.uniqueEntityId = id || new UniqueEntityId()
   }
 

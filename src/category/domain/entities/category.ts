@@ -13,13 +13,11 @@ type CategoryProperties = {
 
 class Category extends Entity<CategoryProperties> {
   constructor(
-    private props: CategoryProperties,
+    props: CategoryProperties,
     id?: UniqueEntityId
   ) {
     super(props, id)
 
-    this.props.name = props.name
-    this.props.description = props.description ?? ''
     this.isActive = props.isActive ?? true
     this.created_at = props.created_at ?? new Date()
     this.updated_at = props.updated_at
