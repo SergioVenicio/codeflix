@@ -1,4 +1,5 @@
-import UniqueEntityId from '../../../@seedwork/domain/unique-entity-id.vo'
+import Entity from '../../../@seedwork/domain/entity/entity'
+import UniqueEntityId from "../../../@seedwork/domain/value-objects/unique-entity-id.vo"
 
 
 type CategoryProperties = {
@@ -10,48 +11,64 @@ type CategoryProperties = {
 }
 
 
-class Category {
-  private _id: UniqueEntityId
-  private _name: string
-  private _description: string
-  private _isActive: boolean
-  private _created_at: Date
-  private _updated_at: Date | undefined
-
+class Category extends Entity<CategoryProperties> {
   constructor(
-    props: CategoryProperties,
+    private props: CategoryProperties,
     id?: UniqueEntityId
   ) {
-    this._id = id || new UniqueEntityId()
-    this._name = props.name
-    this._description = props.description ?? ''
-    this._isActive = props.isActive ?? true
-    this._created_at = props.created_at ?? new Date()
-    this._updated_at = props.updated_at
-  }
+    super(props, id)
 
-  get id(): string {
-    return this._id.toString()
+    this.props.name = props.name
+    this.props.description = props.description ?? ''
+    this.isActive = props.isActive ?? true
+    this.created_at = props.created_at ?? new Date()
+    this.updated_at = props.updated_at
   }
 
   get description(): string {
-    return String(this._description)
+    return String(this.props.description)
   }
 
   get name(): string {
-    return this._name
+    return this.props.name
+  }
+
+  set isActive(value: boolean) {
+    this.props.isActive = value
   }
   
   get isActive(): boolean {
-    return Boolean(this._isActive)
+    return Boolean(this.props.isActive)
+  }
+
+  set created_at(value: Date) {
+    this.props.created_at = value
   }
 
   get created_at(): Date {
-    return new Date(this._created_at)
+    return this.props.created_at as Date
   }
 
-  get updated_at(): Date | undefined {
-    return this._updated_at ? new Date(this._updated_at): undefined
+  set updated_at(value: Date | undefined) {
+    this.props.updated_at = value
+  }
+
+  get updated_at(): Date | undefined{
+    return this.props.updated_at
+  }
+
+  public update(name: string, description: string) {
+    this.props.name = name
+    this.props.description = description
+    this.updated_at = new Date()
+  }
+
+  public activate() {
+    this.isActive = true
+  }
+
+  public deactivate() {
+    this.isActive = false
   }
 }
 

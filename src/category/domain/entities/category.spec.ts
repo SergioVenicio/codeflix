@@ -2,7 +2,7 @@ import { validate } from "uuid"
 
 import Category from "./category"
 
-import UniqueEntityId from "../../../@seedwork/domain/unique-entity-id.vo"
+import UniqueEntityId from "../../../@seedwork/domain/value-objects/unique-entity-id.vo"
 
 describe('category test suit', () => {
   it('test contruct category', () => {
@@ -62,7 +62,7 @@ describe('category test suit', () => {
     propList.forEach(props => {
       const category = new Category(props.props, props.id)
       expect(category.id).toBeDefined()
-      expect(validate(category.id)).toBe(true)
+      expect(validate(category.id)).toBeTruthy()
     })
   })
 
@@ -72,6 +72,38 @@ describe('category test suit', () => {
     })
     expect(category.description).toBe('')
     expect(category.created_at).toBeInstanceOf(Date)
-    expect(category.isActive).toBe(true)
+    expect(category.isActive).toBeTruthy
+  })
+
+  it('should be able to convert a category to json', () => {
+    const category = new Category({
+      name: 'Movie'
+    })
+    expect(category.toJson()).toMatchObject({
+      name: 'Movie'
+    })
+  })
+
+  it('should be able to update a existent category', () => {
+    const category = new Category({
+      name: 'Movie'
+    })
+
+    category.update('test name', 'test desc')
+    expect(category.name).toBe('test name')
+    expect(category.description).toBe('test desc')
+    expect(category.updated_at).toBeDefined()
+  })
+
+  it('should be able to active and deactive a category', () => {
+    const category = new Category({
+      name: 'Movie'
+    })
+
+    category.activate()
+    expect(category.isActive).toBeTruthy()
+
+    category.deactivate()
+    expect(category.isActive).toBeFalsy()
   })
 })

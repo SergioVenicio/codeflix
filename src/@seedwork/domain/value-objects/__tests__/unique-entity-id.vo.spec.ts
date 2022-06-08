@@ -1,5 +1,5 @@
-import UniqueEntityId from './unique-entity-id.vo'
-import InvalidUuidError from "../../errors/invalid-uuid.error"
+import UniqueEntityId from '../unique-entity-id.vo'
+import InvalidUuidError from "../../../../errors/invalid-uuid.error"
 
 describe('Unique entity id value object tests', () => {
   it('should call validate method', () => {
@@ -7,7 +7,7 @@ describe('Unique entity id value object tests', () => {
     const validateSpy = jest.spyOn(UniqueEntityId.prototype, 'validate')
     const id = new UniqueEntityId(uuid)
 
-    expect(id.toString()).toBe(uuid)
+    expect(id.value).toBe(uuid)
     expect(validateSpy).toBeCalledTimes(1)
   })
   it('should create with a valid uuid', () => {
