@@ -5,6 +5,11 @@ import Category from "./category"
 import UniqueEntityId from "../../../@seedwork/domain/value-objects/unique-entity-id.vo"
 
 describe('category test suit', () => {
+
+  beforeAll(() => {
+    Category.validate = jest.fn()
+  })
+
   it('test contruct category', () => {
     const category = new Category({
       name: 'Movie',
@@ -13,6 +18,7 @@ describe('category test suit', () => {
       created_at: new Date()
     })
 
+    expect(Category.validate).toBeCalledTimes(1)
     expect(category.name).toBe('Movie')
     expect(category.description).toBe('description')
     expect(category.isActive).toBe(true)
@@ -70,6 +76,8 @@ describe('category test suit', () => {
     const category = new Category({
       name: 'Movie'
     })
+
+    expect(Category.validate).toBeCalledTimes(1)
     expect(category.description).toBe('')
     expect(category.created_at).toBeInstanceOf(Date)
     expect(category.isActive).toBeTruthy
@@ -90,6 +98,7 @@ describe('category test suit', () => {
     })
 
     category.update('test name', 'test desc')
+    expect(Category.validate).toBeCalledTimes(2)
     expect(category.name).toBe('test name')
     expect(category.description).toBe('test desc')
     expect(category.updated_at).toBeDefined()
@@ -99,6 +108,8 @@ describe('category test suit', () => {
     const category = new Category({
       name: 'Movie'
     })
+
+    expect(Category.validate).toBeCalledTimes(1)
 
     category.activate()
     expect(category.isActive).toBeTruthy()

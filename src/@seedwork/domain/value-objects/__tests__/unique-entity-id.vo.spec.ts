@@ -1,5 +1,5 @@
 import UniqueEntityId from '../unique-entity-id.vo'
-import InvalidUuidError from "../../../../errors/invalid-uuid.error"
+import InvalidUuidError from "../../errors/invalid-uuid.error"
 
 describe('Unique entity id value object tests', () => {
   it('should call validate method', () => {

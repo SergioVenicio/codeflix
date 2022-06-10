@@ -1,5 +1,10 @@
 import Entity from '../../../@seedwork/domain/entity/entity'
-import UniqueEntityId from "../../../@seedwork/domain/value-objects/unique-entity-id.vo"
+import UniqueEntityId from '../../../@seedwork/domain/value-objects/unique-entity-id.vo'
+
+import CategoryValidatorFactory from '../validators/category.validator'
+
+import { EntityValidationError } from '../../../@seedwork/domain/errors/validation-error'
+import { FieldsErrors } from '@seedwork/domain/validators/validor-fields-interface'
 
 
 type CategoryProperties = {
@@ -18,9 +23,17 @@ class Category extends Entity<CategoryProperties> {
   ) {
     super(props, id)
 
+    this.props.description = props.description ?? ''
+
     this.isActive = props.isActive ?? true
     this.created_at = props.created_at ?? new Date()
     this.updated_at = props.updated_at
+
+    Category.validate({
+      name: this.props.name,
+      description: this.props.description,
+      isActive: this.props.isActive
+    })
   }
 
   get description(): string {
@@ -58,6 +71,12 @@ class Category extends Entity<CategoryProperties> {
   public update(name: string, description: string) {
     this.props.name = name
     this.props.description = description
+
+    Category.validate({
+      name: this.props.name,
+      description: this.props.description
+    })
+
     this.updated_at = new Date()
   }
 
@@ -68,6 +87,23 @@ class Category extends Entity<CategoryProperties> {
   public deactivate() {
     this.isActive = false
   }
+
+  // public static validate({name, description, isActive}: Omit<CategoryProperties, 'created_at' | 'updated_at'>) {
+  //   ValidatorRules.values(name, 'name').required().string()
+  //   ValidatorRules.values(description, 'description').string()
+  //   ValidatorRules.values(isActive, 'isActive').boolean()
+  // }
+
+  public static validate(props: CategoryProperties) {
+    const validator = CategoryValidatorFactory.create()
+    const isValid = validator.validate(props)
+    if (isValid) {
+      return
+    }
+
+    throw new EntityValidationError(validator.errors as FieldsErrors)
+  }
 }
 
+export { CategoryProperties }
 export default Category

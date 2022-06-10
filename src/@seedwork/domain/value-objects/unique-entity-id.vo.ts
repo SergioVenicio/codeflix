@@ -2,7 +2,7 @@ import { v4 as uuidv4, validate } from "uuid"
 
 import ValueObject from './value-object'
 
-import InvalidUuidError from "../../../errors/invalid-uuid.error"
+import InvalidUuidError from "../errors/invalid-uuid.error"
 
 
 class UniqueEntityId extends ValueObject<string>{
