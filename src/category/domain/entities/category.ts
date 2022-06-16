@@ -4,7 +4,7 @@ import UniqueEntityId from '../../../@seedwork/domain/value-objects/unique-entit
 import CategoryValidatorFactory from '../validators/category.validator'
 
 import { EntityValidationError } from '../../../@seedwork/domain/errors/validation-error'
-import { FieldsErrors } from '@seedwork/domain/validators/validor-fields-interface'
+import { FieldsErrors } from '../../../@seedwork/domain/validators/validor-fields-interface'
 
 
 type CategoryProperties = {
